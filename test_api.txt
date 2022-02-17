@@ -1,0 +1,55 @@
+const response = await fetch('/api/rooms', {
+    method: 'POST', // или 'PUT'
+    body: JSON.stringify({price:800,roomType:'Common', roomNumber:5}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+const response = await fetch('/api/rooms/620e1410f1ebca8dc95f450c', {
+    method: 'DELETE',
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+const response = await fetch('/api/rooms', {
+    method: 'PATCH', // или 'PUT'
+    body: JSON.stringify({id:'620e15a56ac5ffc5f2ac2edd',price:700}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+
+
+
+
+const response = await fetch('/api/clients', {
+    method: 'POST', // или 'PUT'
+    body: JSON.stringify({surname:'Tsapyk',firstName:'Yelyzaveta', middleName:'Romanivna',passportNumber:'123456789', telephoneNumber:'063-439-2417'}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+const response = await fetch('/api/clients/620e20f42bbbe654357e4144', {
+    method: 'DELETE',
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+const response = await fetch('/api/clients', {
+    method: 'PATCH', // или 'PUT'
+    body: JSON.stringify({id:'620e23b3236bdb4fb46ddbe0',firstName:'Arthyr'}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
