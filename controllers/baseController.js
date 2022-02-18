@@ -1,5 +1,6 @@
 const Room = require("../models/roomModel");
 const Client = require("../models/clientModel");
+const Order = require("../models/orderModel");
 
 const {ObjectId} = require("mongodb");
 
@@ -35,6 +36,16 @@ module.exports = {
     async getClientById(id) {
         const client = await Client.findOne({_id: new ObjectId(id)},'-__v');
         return client ?? false;
+    },
+
+    async getAllOrders() {
+        const orders = await Order.find({},'-__v');
+        return orders ?? false;
+    },
+
+    async getOrderById(id) {
+        const order = await Order.findOne({_id: new ObjectId(id)},'-__v');
+        return order ?? false;
     },
 
     /*async getQuestionById(id) {

@@ -8,7 +8,7 @@ module.exports = {
         try {
             const client = new Client(req.body);
             await client.save();
-            sendResult(res, 'Success', {"id": client._id, ...client._doc});
+            sendResult(res, 'Success', {...client._doc});
         } catch (error) {
             sendError(res, 400, `Bad request! ${error}`)
         }
@@ -25,7 +25,7 @@ module.exports = {
                 })
                 await Client.replaceOne({_id: new ObjectId(req.body.id)}, client);
                 sendResult(res, 'Success', {
-                    "id": client._id, ...client._doc
+                    ...client._doc
                 });
             } else {
                 sendError(res, 400, 'Client is missing')
@@ -42,7 +42,6 @@ module.exports = {
             if (clients.length) {
                 sendResult(res, 'Success', clients.map((client) => {
                     return {
-                        "id": client._id,
                         ...client._doc
                     }
                 }));
@@ -59,7 +58,6 @@ module.exports = {
             const client = await getClientById(req.params.id);
             if (client) {
                 sendResult(res, 'Success', {
-                    "id": client._id,
                     ...client._doc
                 });
             } else {
@@ -77,7 +75,6 @@ module.exports = {
                 await client.remove();
                 /////Delete topics and questions/////
                 sendResult(res, 'Success', {
-                    "id": client._id,
                     ...client._doc
                 });
             } else {

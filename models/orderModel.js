@@ -1,46 +1,29 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const uniqueValidator = require('mongoose-unique-validator');
 
 const OrderSchema = new Schema({
-    surname: {
+    roomId: {
         type: String,
         required: true
     },
-    firstName: {
+    clientId: {
         type: String,
         required: true
     },
-    middleName: {
-        type: String,
-        required: false
+    dateOfArrival: {
+        type: Date,
+        required: true
     },
-    passportNumber: {
-        type: String,
-        validate: {
-            validator: function (v) {
-                console.log('passportNumber', /\d{3}-\d{3}-\d{4}/.test(v));
-                return v.length === 9;
-            },
-            message: props => `${props.value} is not a valid passport number!`
-        },
-        required: [true, 'User passport number required'],
-        unique: true
+    dateOfDeparture: {
+        type: Date,
+        required: true,
     },
-    telephoneNumber: {
-        type: String,
-        validate: {
-            validator: function(v) {
-                console.log('telephoneNumber', /\d{3}-\d{3}-\d{4}/.test(v));
-                return /\d{3}-\d{3}-\d{4}/.test(v);
-            },
-            message: props => `${props.value} is not a valid phone number!`
-        },
-        required: [true, 'User phone number required']
+    cost: {
+        type: Number,
+        required: true
     },
 });
 
-OrderSchema.plugin(uniqueValidator);
 
 /*CategorySchema.post('save', (doc) => {
     console.log('save');

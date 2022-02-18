@@ -1,5 +1,5 @@
 const response = await fetch('/api/rooms', {
-    method: 'POST', // или 'PUT'
+    method: 'POST',
     body: JSON.stringify({price:800,roomType:'Common', roomNumber:5}),
     headers: {
       'Content-Type': 'application/json'
@@ -15,7 +15,7 @@ const response = await fetch('/api/rooms/620e1410f1ebca8dc95f450c', {
   console.log('Успех:', json);
 
 const response = await fetch('/api/rooms', {
-    method: 'PATCH', // или 'PUT'
+    method: 'PATCH',
     body: JSON.stringify({id:'620e15a56ac5ffc5f2ac2edd',price:700}),
     headers: {
       'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ const response = await fetch('/api/rooms', {
 
 
 const response = await fetch('/api/clients', {
-    method: 'POST', // или 'PUT'
+    method: 'POST',
     body: JSON.stringify({surname:'Tsapyk',firstName:'Yelyzaveta', middleName:'Romanivna',passportNumber:'123456789', telephoneNumber:'063-439-2417'}),
     headers: {
       'Content-Type': 'application/json'
@@ -45,8 +45,36 @@ const response = await fetch('/api/clients/620e20f42bbbe654357e4144', {
   console.log('Успех:', json);
 
 const response = await fetch('/api/clients', {
-    method: 'PATCH', // или 'PUT'
+    method: 'PATCH',
     body: JSON.stringify({id:'620e23b3236bdb4fb46ddbe0',firstName:'Arthyr'}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+
+
+const response = await fetch('/api/orders', {
+    method: 'POST', // или 'PUT'
+    body: JSON.stringify({roomId:'620e1e231f1cb0574dd953bb',clientId:'620e2286eefd538ada8f80d7', dateOfArrival:new Date(),dateOfDeparture:new Date(2022, 1, 19)}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const json = await response.json();
+  console.log('Успех:', json);
+
+const response = await fetch('/api/orders/620e2f65e791103be3a300e6', {
+      method: 'DELETE',
+    });
+    const json = await response.json();
+    console.log('Успех:', json);
+
+const response = await fetch('/api/orders', {
+    method: 'PATCH',
+    body: JSON.stringify({id:'620f420f68771360f67d090e',dateOfDeparture:new Date(2022,2,25)}),
     headers: {
       'Content-Type': 'application/json'
     }

@@ -1,2 +1,2 @@
-<p>Deployment: https://hotel-api.herokuapp.com/</p>
+<p>Deployment: https://liza-hotel-api.herokuapp.com/</p>
 <p>Author: Tsapyk Yelyzaveta</p>

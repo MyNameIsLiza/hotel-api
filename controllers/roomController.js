@@ -8,7 +8,7 @@ module.exports = {
         try {
             const room = new Room(req.body);
             await room.save();
-            sendResult(res, 'Success', {"id": room._id, ...room._doc});
+            sendResult(res, 'Success', {...room._doc});
         } catch (error) {
             sendError(res, 400, `Bad request! ${error}`)
         }
@@ -27,7 +27,7 @@ module.exports = {
                 });
                 await Room.replaceOne({_id: new ObjectId(req.body.id)}, room);
                 sendResult(res, 'Success', {
-                    "id": room._id, ...room._doc
+                    ...room._doc
                 });
             } else {
                 sendError(res, 400, 'Room is missing')
@@ -44,7 +44,6 @@ module.exports = {
             if (rooms.length) {
                 sendResult(res, 'Success', rooms.map((room) => {
                     return {
-                        "id": room._id,
                         ...room._doc
                     }
                 }));
@@ -61,7 +60,6 @@ module.exports = {
             const room = await getRoomById(req.params.id);
             if (room) {
                 sendResult(res, 'Success', {
-                    "id": room._id,
                     ...room._doc
                 });
             } else {
@@ -77,9 +75,7 @@ module.exports = {
             const room = await getRoomById(req.params.id);
             if (room) {
                 await room.remove();
-                /////Delete topics and questions/////
                 sendResult(res, 'Success', {
-                    "id": room._id,
                     ...room._doc
                 });
             } else {

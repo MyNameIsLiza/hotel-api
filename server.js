@@ -18,9 +18,11 @@ app.get('/', (req, res) => {
 
 const roomRouter = require("./routes/roomRouter");
 const clientRouter = require("./routes/clientRouter");
+const orderRouter = require("./routes/orderRouter");
 
 app.use("/api/rooms", roomRouter);
 app.use("/api/clients", clientRouter);
+app.use("/api/orders", orderRouter);
 
 const PORT = process.env.PORT || 8080;
 

@@ -38,6 +38,11 @@ const ClientSchema = new Schema({
         },
         required: [true, 'User phone number required']
     },
+    privileged: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
 });
 
 ClientSchema.plugin(uniqueValidator);
