@@ -4,6 +4,8 @@ const {sendError, sendResult, getClientById, getAllClients} = require('./baseCon
 
 module.exports = {
     addClient: async (req, res) => {
+        // #swagger.tags = ['Clients']
+        // #swagger.description = 'Add client'
         console.log("addClient");
         try {
             const client = new Client(req.body);
@@ -14,16 +16,18 @@ module.exports = {
         }
     },
     editClient: async (req, res) => {
+        // #swagger.tags = ['Clients']
+        // #swagger.description = 'Edit client by id'
         console.log("editClient");
         try {
             let newClient = {...req.body};
-            newClient._id = new ObjectId(req.body.id);
-            let client = await getClientById(req.body.id);
+            newClient._id = new ObjectId(req.params.id);
+            let client = await getClientById(req.params.id);
             if (client) {
                 Object.entries(client._doc).forEach(([key, value]) => {
                     client[key] = newClient[key] ?? value;
                 })
-                await Client.replaceOne({_id: new ObjectId(req.body.id)}, client);
+                await Client.replaceOne({_id: new ObjectId(req.params.id)}, client);
                 sendResult(res, 'Success', {
                     ...client._doc
                 });
@@ -35,6 +39,8 @@ module.exports = {
         }
     },
     getClients: async (req, res) => {
+        // #swagger.tags = ['Clients']
+        // #swagger.description = 'Get all clients'
         console.log("getClients");
         try {
             const clients = await getAllClients();
@@ -53,6 +59,8 @@ module.exports = {
         }
     },
     getClient: async (req, res) => {
+        // #swagger.tags = ['Clients']
+        // #swagger.description = 'Get client by id'
         console.log("getClient");
         try {
             const client = await getClientById(req.params.id);
@@ -68,12 +76,16 @@ module.exports = {
         }
     },
     deleteClient: async (req, res) => {
+        // #swagger.tags = ['Clients']
+        // #swagger.description = 'Delete client by id'
+        /*  #swagger.parameters['id'] = {
+                description: 'Client id'
+        } */
         console.log("deleteClient");
         try {
             const client = await getClientById(req.params.id);
             if (client) {
                 await client.remove();
-                /////Delete topics and questions/////
                 sendResult(res, 'Success', {
                     ...client._doc
                 });

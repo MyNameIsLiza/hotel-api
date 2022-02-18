@@ -14,9 +14,9 @@ const response = await fetch('/api/rooms/620e1410f1ebca8dc95f450c', {
   const json = await response.json();
   console.log('Успех:', json);
 
-const response = await fetch('/api/rooms', {
+const response = await fetch('/api/rooms/620e15a56ac5ffc5f2ac2edd', {
     method: 'PATCH',
-    body: JSON.stringify({id:'620e15a56ac5ffc5f2ac2edd',price:700}),
+    body: JSON.stringify({price:700}),
     headers: {
       'Content-Type': 'application/json'
     }
@@ -44,7 +44,7 @@ const response = await fetch('/api/clients/620e20f42bbbe654357e4144', {
   const json = await response.json();
   console.log('Успех:', json);
 
-const response = await fetch('/api/clients', {
+const response = await fetch('/api/clients/620e23b3236bdb4fb46ddbe0', {
     method: 'PATCH',
     body: JSON.stringify({id:'620e23b3236bdb4fb46ddbe0',firstName:'Arthyr'}),
     headers: {
@@ -72,9 +72,9 @@ const response = await fetch('/api/orders/620e2f65e791103be3a300e6', {
     const json = await response.json();
     console.log('Успех:', json);
 
-const response = await fetch('/api/orders', {
+const response = await fetch('/api/orders/620f420f68771360f67d090e', {
     method: 'PATCH',
-    body: JSON.stringify({id:'620f420f68771360f67d090e',dateOfDeparture:new Date(2022,2,25)}),
+    body: JSON.stringify({dateOfDeparture:new Date(2022,2,25)}),
     headers: {
       'Content-Type': 'application/json'
     }

@@ -9,6 +9,10 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "swagger-autogen": "node ./swagger.js"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.18.8"
   }
 }

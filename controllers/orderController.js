@@ -6,6 +6,7 @@ const {sendError, sendResult, getOrderById, getAllOrders} = require('./baseContr
 
 module.exports = {
     addOrder: async (req, res) => {
+        // #swagger.tags = ['Orders']
         console.log("addOrder");
         try {
             const order = new Order(req.body);
@@ -27,16 +28,17 @@ module.exports = {
         }
     },
     editOrder: async (req, res) => {
+        // #swagger.tags = ['Orders']
         console.log("editOrder");
         try {
             let newOrder = {...req.body};
-            let order = await getOrderById(req.body.id);
+            let order = await getOrderById(req.params.id);
             console.log('order', order);
             if (order) {
                 Object.entries(order._doc).forEach(([key, value]) => {
                     order[key] = newOrder[key] ?? value;
                 });
-                await Order.replaceOne({_id: new ObjectId(req.body.id)}, order);
+                await Order.replaceOne({_id: new ObjectId(req.params.id)}, order);
                 sendResult(res, 'Success', {
                     ...order._doc
                 });
@@ -48,6 +50,7 @@ module.exports = {
         }
     },
     getOrders: async (req, res) => {
+        // #swagger.tags = ['Orders']
         console.log("getOrders");
         try {
             const orders = await getAllOrders();
@@ -66,6 +69,7 @@ module.exports = {
         }
     },
     getOrder: async (req, res) => {
+        // #swagger.tags = ['Orders']
         console.log("getOrder");
         try {
             const order = await getOrderById(req.params.id);
@@ -81,12 +85,12 @@ module.exports = {
         }
     },
     deleteOrder: async (req, res) => {
+        // #swagger.tags = ['Orders']
         console.log("deleteOrder");
         try {
             const order = await getOrderById(req.params.id);
             if (order) {
                 await order.remove();
-                /////Delete topics and questions/////
                 sendResult(res, 'Success', {
                     ...order._doc
                 });
