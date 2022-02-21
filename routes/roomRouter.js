@@ -4,6 +4,7 @@ const RoomController = require("../controllers/roomController.js");
 
 
 router.post("/", RoomController.addRoom);
+router.post("/search", RoomController.searchRooms);
 router.patch("/", RoomController.editRoom);
 router.get("/", RoomController.getRooms);
 router.get("/:id", RoomController.getRoom);

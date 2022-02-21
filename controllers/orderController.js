@@ -2,7 +2,7 @@ const Order = require('../models/orderModel');
 const {getRoomById} = require("./baseController");
 const {getClientById} = require("./baseController");
 const {ObjectId} = require("mongodb");
-const {sendError, sendResult, getOrderById, getAllOrders} = require('./baseController');
+const {sendError, sendResult, getOrderById, getAllOrders, filterData} = require('./baseController');
 
 module.exports = {
     addOrder: async (req, res) => {
@@ -51,6 +51,25 @@ module.exports = {
         console.log("getOrders");
         try {
             const orders = await getAllOrders();
+            console.log(orders);
+            if (orders.length) {
+                sendResult(res, 'Success', orders.map((order) => {
+                    return {
+                        ...order._doc
+                    }
+                }));
+            } else {
+                sendError(res, 400, 'Orders are missing')
+            }
+        } catch (error) {
+            sendError(res, 400, `Bad request! ${error}`)
+        }
+    },
+    searchOrders: async (req, res) => {
+        console.log("searchOrders");
+        try {
+            let orders = await getAllOrders();
+            orders = filterData(orders, req.body)
             console.log(orders);
             if (orders.length) {
                 sendResult(res, 'Success', orders.map((order) => {

@@ -1,6 +1,6 @@
 const Client = require('../models/clientModel');
 const {ObjectId} = require("mongodb");
-const {sendError, sendResult, getClientById, getAllClients} = require('./baseController');
+const {sendError, sendResult, getClientById, getAllClients, filterData} = require('./baseController');
 
 module.exports = {
     addClient: async (req, res) => {
@@ -73,12 +73,30 @@ module.exports = {
             const client = await getClientById(req.params.id);
             if (client) {
                 await client.remove();
-                /////Delete topics and questions/////
                 sendResult(res, 'Success', {
                     ...client._doc
                 });
             } else {
                 sendError(res, 400, 'Client is missing')
+            }
+        } catch (error) {
+            sendError(res, 400, `Bad request! ${error}`)
+        }
+    },
+    searchClients: async (req, res) => {
+        console.log("searchClients");
+        try {
+            let clients = await getAllClients();
+            clients = filterData(clients, req.body)
+            console.log(clients);
+            if (clients.length) {
+                sendResult(res, 'Success', clients.map((client) => {
+                    return {
+                        ...client._doc
+                    }
+                }));
+            } else {
+                sendError(res, 400, 'Clients are missing')
             }
         } catch (error) {
             sendError(res, 400, `Bad request! ${error}`)

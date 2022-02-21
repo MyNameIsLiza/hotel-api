@@ -3,6 +3,7 @@ const Client = require("../models/clientModel");
 const Order = require("../models/orderModel");
 
 const {ObjectId} = require("mongodb");
+const smartSearch = require("smart-search");
 
 module.exports = {
     sendError(res, status, message) {
@@ -14,74 +15,86 @@ module.exports = {
     sendResult(res, message, result) {
         res.send({
             message: message,
-            result: Array.isArray(result)?[...result]:result
+            result: Array.isArray(result) ? [...result] : result
         });
     },
 
     async getAllRooms() {
-        const rooms = await Room.find({},'-__v');
+        const rooms = await Room.find({}, '-__v');
         return rooms ?? false;
     },
 
     async getRoomById(id) {
-        const room = await Room.findOne({_id: new ObjectId(id)},'-__v');
+        const room = await Room.findOne({_id: new ObjectId(id)}, '-__v');
         return room ?? false;
     },
 
     async getAllClients() {
-        const clients = await Client.find({},'-__v');
+        const clients = await Client.find({}, '-__v');
         return clients ?? false;
     },
 
     async getClientById(id) {
-        const client = await Client.findOne({_id: new ObjectId(id)},'-__v');
+        const client = await Client.findOne({_id: new ObjectId(id)}, '-__v');
         return client ?? false;
     },
 
     async getAllOrders() {
-        const orders = await Order.find({},'-__v');
+        const orders = await Order.find({}, '-__v');
         return orders ?? false;
     },
 
     async getOrderById(id) {
-        const order = await Order.findOne({_id: new ObjectId(id)},'-__v');
+        const order = await Order.findOne({_id: new ObjectId(id)}, '-__v');
         return order ?? false;
     },
 
-    /*async getQuestionById(id) {
-        const question = await Question.findOne({_id: new ObjectId(id)},'-__v');
-        return question ?? false;
-    },
+    filterData(arr, obj) {
+        const arrays = [];
+        Object.entries(obj).forEach(([key, value]) => {
+            if (typeof value === 'string') {
+                const fields = {};
+                fields[key] = true;
+                arrays.push(smartSearch(arr, value, fields));
+            } else if (typeof value === 'number') {
+                arrays.push(arr.filter((el) => el[key].toString().includes(value.toString())))
+            } else {
+                arrays.push(arr.filter((el) => el[key] === value));
+            }
 
-    async getTopicById(id) {
-        const topic = await Topic.findOne({_id: new ObjectId(id)},'-__v');
-        return topic ?? false;
-    },
+        });
+        console.log(arrays)
+        return intersec(arrays) ?? [];
+    }
+}
 
-    async getCategoryById(id) {
-        const category = await Category.findOne({_id: new ObjectId(id)},'-__v');
-        return category ?? false;
-    },
+function lenSort(a, b) {
+    return a.length - b.length;
+}
 
+function intersec(arrays) {
+    arrays.sort(lenSort);
 
+    const arraysDicts = [];
+    for (let arrayIndex = 1; arrayIndex < arrays.length; arrayIndex++) {
+        let dict = {};
+        for (let index = 0; index < arrays[arrayIndex].length; index++) {
+            dict[arrays[arrayIndex][index]] = true;
+        }
+        arraysDicts.push(dict);
+    }
 
-    async getAllTopics() {
-        const topics = await Topic.find({},'-__v');
-        return topics ?? false;
-    },
+    const res = [];
+    for (let index = 0; index < arrays[0].length; index++) {
+        let flag = true;
+        for (let arrayIndex = 0; arrayIndex < arraysDicts.length; arrayIndex++) {
+            if (!(arrays[0][index] in arraysDicts[arrayIndex])) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) res.push(arrays[0][index]);
+    }
 
-    async getAllCategories() {
-        const categories = await Category.find({},'-__v');
-        return categories ?? false;
-    },
-
-    async getTopicsByCategoryId(categoryId) {
-        const topics = await Topic.find({'categoryId':categoryId},'-__v');
-        return topics;
-    },
-
-    async getQuestionsByTopicId(topicId) {
-        const questions = await Question.find({'topicId':topicId},'-__v');
-        return questions;
-    },*/
+    return res;
 }

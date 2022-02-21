@@ -1,6 +1,6 @@
 const Room = require('../models/roomModel');
 const {ObjectId} = require("mongodb");
-const {sendError, sendResult, getRoomById, getAllRooms} = require('./baseController');
+const {sendError, sendResult, getRoomById, getAllRooms, filterData} = require('./baseController');
 
 module.exports = {
     addRoom: async (req, res) => {
@@ -40,6 +40,25 @@ module.exports = {
         console.log("getRooms");
         try {
             const rooms = await getAllRooms();
+            console.log(rooms);
+            if (rooms.length) {
+                sendResult(res, 'Success', rooms.map((room) => {
+                    return {
+                        ...room._doc
+                    }
+                }));
+            } else {
+                sendError(res, 400, 'Rooms are missing')
+            }
+        } catch (error) {
+            sendError(res, 400, `Bad request! ${error}`)
+        }
+    },
+    searchRooms: async (req, res) => {
+        console.log("searchRooms");
+        try {
+            let rooms = await getAllRooms();
+            rooms = filterData(rooms, req.body);
             console.log(rooms);
             if (rooms.length) {
                 sendResult(res, 'Success', rooms.map((room) => {
