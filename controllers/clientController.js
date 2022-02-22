@@ -17,13 +17,13 @@ module.exports = {
         console.log("editClient");
         try {
             let newClient = {...req.body};
-            newClient._id = new ObjectId(req.body.id);
-            let client = await getClientById(req.body.id);
+            newClient._id = new ObjectId(req.body._id);
+            let client = await getClientById(req.body._id);
             if (client) {
                 Object.entries(client._doc).forEach(([key, value]) => {
                     client[key] = newClient[key] ?? value;
                 })
-                await Client.replaceOne({_id: new ObjectId(req.body.id)}, client);
+                await Client.replaceOne({_id: new ObjectId(req.body._id)}, client);
                 sendResult(res, 'Success', {
                     ...client._doc
                 });

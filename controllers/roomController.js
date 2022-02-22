@@ -17,7 +17,7 @@ module.exports = {
         console.log("editRoom");
         try {
             let newRoom = {...req.body};
-            let room = await getRoomById(req.body.id);
+            let room = await getRoomById(req.body._id);
             console.log('room', room);
             if (room) {
                 Object.entries(room._doc).forEach(([key, value]) => {
@@ -25,7 +25,7 @@ module.exports = {
 
 
                 });
-                await Room.replaceOne({_id: new ObjectId(req.body.id)}, room);
+                await Room.replaceOne({_id: new ObjectId(req.body._id)}, room);
                 sendResult(res, 'Success', {
                     ...room._doc
                 });

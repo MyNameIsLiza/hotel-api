@@ -30,13 +30,13 @@ module.exports = {
         console.log("editOrder");
         try {
             let newOrder = {...req.body};
-            let order = await getOrderById(req.body.id);
+            let order = await getOrderById(req.body._id);
             console.log('order', order);
             if (order) {
                 Object.entries(order._doc).forEach(([key, value]) => {
                     order[key] = newOrder[key] ?? value;
                 });
-                await Order.replaceOne({_id: new ObjectId(req.body.id)}, order);
+                await Order.replaceOne({_id: new ObjectId(req.body._id)}, order);
                 sendResult(res, 'Success', {
                     ...order._doc
                 });
