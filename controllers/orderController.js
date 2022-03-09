@@ -9,14 +9,12 @@ module.exports = {
         console.log("addOrder");
         try {
             const order = new Order(req.body);
-            console.log('client', await getClientById(req.body.clientId))
             const client = await getClientById(req.body.clientId);
             const room = await getRoomById(req.body.roomId);
-            if (!client) {
-                sendError(res, 400, `That client doesn't exist`);
-            }
-            if (!room) {
-                sendError(res, 400, `That room doesn't exist`);
+            const days = Math.ceil(Math.abs(order.dateOfDeparture.getTime() - order.dateOfArrival.getTime()) / (1000 * 3600 * 24));
+            if(days < 1){
+                sendError(res, 400, `Bad request! Dates are inappropriate`);
+                return;
             }
             order.cost = room.price * Math.ceil(Math.abs(order.dateOfDeparture.getTime() - order.dateOfArrival.getTime()) / (1000 * 3600 * 24));
             order.cost = client.privileged ? order.cost * 0.8 : order.cost;

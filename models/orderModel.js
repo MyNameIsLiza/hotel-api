@@ -4,11 +4,13 @@ const Schema = mongoose.Schema;
 const OrderSchema = new Schema({
     roomId: {
         type: String,
-        required: true
+        required: true,
+        ref: 'rooms'
     },
     clientId: {
         type: String,
-        required: true
+        required: true,
+        ref: 'clients'
     },
     dateOfArrival: {
         type: Date,
@@ -20,8 +22,24 @@ const OrderSchema = new Schema({
     },
     cost: {
         type: Number,
+        default: 0,
         required: true
     },
+});
+
+OrderSchema.pre('save',  function (next)  {
+    const order = this;
+    const Room = mongoose.model('rooms');
+    const Client = mongoose.model('clients');
+    Room.findOne({_id:order.roomId}, function (err, found) {
+        if (found) {
+            Client.findOne({_id:order.clientId}, function (err, found) {
+                if (found) return next();
+                else return next(new Error("Client is not found"));
+            });
+        }
+        else return next(new Error("Room is not found"));
+    });
 });
 
 

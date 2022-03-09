@@ -22,8 +22,6 @@ module.exports = {
             if (room) {
                 Object.entries(room._doc).forEach(([key, value]) => {
                     room[key] = newRoom[key] ?? value;
-
-
                 });
                 await Room.replaceOne({_id: new ObjectId(req.body._id)}, room);
                 sendResult(res, 'Success', {

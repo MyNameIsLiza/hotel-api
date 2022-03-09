@@ -8,17 +8,10 @@ const RoomSchema = new Schema({
         required: true,
         unique: true
     },
-    price: {
-        type: Number,
-        required: true
-    },
-    roomType: {
+    roomTypeId: {
         type: String,
         required: true,
-        enum: {
-            values: ['Luxury', 'President', 'Common', 'Economy'],
-            message: '{VALUE} is not supported'
-        }
+        ref: 'room_types'
     },
     roomStatus: {
         type: Boolean,
@@ -29,6 +22,14 @@ const RoomSchema = new Schema({
 
 RoomSchema.plugin(uniqueValidator);
 
+RoomSchema.pre('save',  function (next)  {
+    const room = this;
+    const RoomTypes = mongoose.model('room_types');
+    RoomTypes.findOne({_id:room.roomTypeId}, function (err, found) {
+        if (found) return next();
+        else return next(new Error("not found"));
+    });
+});
 /*CategorySchema.post('save', (doc) => {
     console.log('save');
     console.log('doc', doc);

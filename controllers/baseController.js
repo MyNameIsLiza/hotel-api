@@ -4,6 +4,7 @@ const Order = require("../models/orderModel");
 
 const {ObjectId} = require("mongodb");
 const smartSearch = require("smart-search");
+const RoomType = require("../models/roomTypeModel");
 
 module.exports = {
     sendError(res, status, message) {
@@ -22,6 +23,16 @@ module.exports = {
     async getAllRooms() {
         const rooms = await Room.find({}, '-__v');
         return rooms ?? false;
+    },
+
+    async getRoomTypeById(id) {
+        const roomType = await RoomType.findOne({_id: new ObjectId(id)}, '-__v');
+        return roomType ?? false;
+    },
+
+    async getAllRoomTypes() {
+        const roomTypes = await RoomType.find({}, '-__v');
+        return roomTypes ?? false;
     },
 
     async getRoomById(id) {

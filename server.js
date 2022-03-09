@@ -16,10 +16,12 @@ app.get('/', (req, res) => {
     res.send(`Hello`);
 })
 
+const roomTypeRouter = require("./routes/roomTypeRouter");
 const roomRouter = require("./routes/roomRouter");
 const clientRouter = require("./routes/clientRouter");
 const orderRouter = require("./routes/orderRouter");
 
+app.use("/api/room_types", roomTypeRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/clients", clientRouter);
 app.use("/api/orders", orderRouter);
