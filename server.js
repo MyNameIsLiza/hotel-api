@@ -1,7 +1,10 @@
 const express = require('express');
 
 const app = express();
-app.use(express.json());
+const bodyParser = require('body-parser')
+//app.use(express.json());
+app.use(bodyParser.json({limit: '16mb', extended: true}));
+app.use(bodyParser.urlencoded({limit: '16mb', extended: true}))
 
 const dotenv = require('dotenv').config();
 

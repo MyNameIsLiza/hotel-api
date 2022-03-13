@@ -13,10 +13,9 @@ const RoomSchema = new Schema({
         required: true,
         ref: 'room_types'
     },
-    roomStatus: {
-        type: Boolean,
-        required: true,
-        default: false
+    image: {
+        type : String,
+        required: true
     },
 });
 
