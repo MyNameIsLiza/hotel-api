@@ -17,6 +17,10 @@ const RoomSchema = new Schema({
         type : String,
         required: true
     },
+    description: {
+        type : String,
+        required: false
+    },
 });
 
 RoomSchema.plugin(uniqueValidator);

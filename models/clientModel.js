@@ -19,7 +19,6 @@ const ClientSchema = new Schema({
         type: String,
         validate: {
             validator: function (v) {
-                console.log('passportNumber', /\d{3}-\d{3}-\d{4}/.test(v));
                 return v.length === 9;
             },
             message: props => `${props.value} is not a valid passport number!`
