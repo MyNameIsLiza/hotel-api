@@ -31,7 +31,7 @@ module.exports = {
             let order = await getOrderById(req.body._id);
             console.log('order', order);
             if (order) {
-                Object.entries(newOrder._doc).forEach(([key, value]) => {
+                Object.entries(newOrder).forEach(([key, value]) => {
                     order[key] = newOrder[key] ?? value;
                 });
                 await Order.replaceOne({_id: new ObjectId(req.body._id)}, order);

@@ -20,7 +20,7 @@ module.exports = {
             newClient._id = new ObjectId(req.body._id);
             let client = await getClientById(req.body._id);
             if (client) {
-                Object.entries(newClient._doc).forEach(([key, value]) => {
+                Object.entries(newClient).forEach(([key, value]) => {
                     client[key] = newClient[key] ?? value;
                 })
                 await Client.replaceOne({_id: new ObjectId(req.body._id)}, client);
