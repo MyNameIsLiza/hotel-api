@@ -20,7 +20,7 @@ module.exports = {
             let roomType = await getRoomTypeById(req.body._id);
             console.log('roomType', roomType);
             if (roomType) {
-                Object.entries(roomType._doc).forEach(([key, value]) => {
+                Object.entries(newRoomType._doc).forEach(([key, value]) => {
                     roomType[key] = newRoomType[key] ?? value;
                 });
                 await RoomType.replaceOne({_id: new ObjectId(req.body._id)}, roomType);
