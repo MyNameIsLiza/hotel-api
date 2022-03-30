@@ -1,4 +1,5 @@
 const Client = require('../models/clientModel');
+const {getClientByEmail} = require("./baseController");
 const {ObjectId} = require("mongodb");
 const {sendError, sendResult, getClientById, getAllClients, filterData} = require('./baseController');
 
@@ -6,7 +7,7 @@ module.exports = {
     loginClient: async (req, res) => {
         console.log("loginClient");
         try {
-            let client = await getClientById(req.body._id);
+            let client = await getClientByEmail(req.body.email);
             client.comparePassword(req.body.password, function (err, isMatch) {
                 if (err) {
                     sendError(res, 400, `Bad request! ${err}`);

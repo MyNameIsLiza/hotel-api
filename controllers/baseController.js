@@ -50,6 +50,11 @@ module.exports = {
         return client ?? false;
     },
 
+    async getClientByEmail(email) {
+        const client = await Client.findOne({email: email}, '-__v');
+        return client ?? false;
+    },
+
     async getAllOrders() {
         const orders = await Order.find({}, '-__v');
         return orders ?? false;
