@@ -29,7 +29,7 @@ const ClientSchema = new Schema({
     telephoneNumber: {
         type: String,
         validate: {
-            validator: function(v) {
+            validator: function (v) {
                 console.log('telephoneNumber', /\d{3}-\d{3}-\d{4}/.test(v));
                 return /\d{3}-\d{3}-\d{4}/.test(v);
             },
@@ -42,6 +42,18 @@ const ClientSchema = new Schema({
         required: true,
         default: false
     },
+    email: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        unique: true,
+        required: 'Email address is required',
+        validate: [function (email) {
+            const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            return re.test(email)
+        }, 'Please fill a valid email address'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    }
 });
 
 ClientSchema.plugin(uniqueValidator);
