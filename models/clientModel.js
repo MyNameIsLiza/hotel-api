@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 
 const ClientSchema = new Schema({
     surname: {
@@ -53,28 +55,39 @@ const ClientSchema = new Schema({
             return re.test(email)
         }, 'Please fill a valid email address'],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+    password: {
+        type: String,
+        required: 'Password is required',
     }
 });
 
 ClientSchema.plugin(uniqueValidator);
 
-/*CategorySchema.post('save', (doc) => {
-    console.log('save');
-    console.log('doc', doc);
+ClientSchema.pre('save', function (next) {
+    const user = this;
+
+    if (!user.isModified('password')) return next();
+
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return next(err);
+
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            if (err) return next(err);
+            user.password = hash;
+            next();
+        });
+    });
 });
 
-ClientSchema.post('remove', async (doc) => {
-    console.log('ClientSchema post remove');
-    try {
-        const topics = await Topic.find({'categoryId': doc._id});
-        if(topics.length){
-            topics.forEach(async (topic)=> await topic.remove());
-        }
-    }catch (e) {
-        console.log('Topics are absent');
-    }
-});
-*/
+ClientSchema.methods.comparePassword = function (candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+        console.log('err', err);
+        console.log('isMatch', isMatch);
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
 
 const Client = mongoose.model('clients', ClientSchema);
 module.exports = Client;
