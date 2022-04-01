@@ -16,8 +16,10 @@ module.exports = {
                 sendError(res, 400, `Bad request! Dates are inappropriate`);
                 return;
             }
-            order.cost = room.price * Math.ceil(Math.abs(order.dateOfDeparture.getTime() - order.dateOfArrival.getTime()) / (1000 * 3600 * 24));
-            order.cost = client.privileged ? order.cost * 0.8 : order.cost;
+            if(!order.cost){
+                order.cost = room.price * Math.ceil(Math.abs(order.dateOfDeparture.getTime() - order.dateOfArrival.getTime()) / (1000 * 3600 * 24));
+                order.cost = client.privileged ? order.cost * 0.8 : order.cost;
+            }
             await order.save();
             sendResult(res, 'Success', {...order._doc});
         } catch (error) {
