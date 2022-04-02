@@ -68,7 +68,14 @@ module.exports = {
     filterData(arr, obj) {
         const arrays = [];
         Object.entries(obj).forEach(([key, value]) => {
-            if (typeof value === 'string') {
+            if (key.toLowerCase().includes('date')){
+                arrays.push(arr.filter((el) => {
+                    el[key].setHours(0,0,0,0);
+                    value = new Date(value);
+                    value.setHours(0,0,0,0);
+                    return el[key].toDateString() === value.toDateString();
+                }))
+            }else if (typeof value === 'string') {
                 const fields = {};
                 fields[key] = true;
                 arrays.push(smartSearch(arr, value, fields));
@@ -77,9 +84,7 @@ module.exports = {
             } else {
                 arrays.push(arr.filter((el) => el[key] === value));
             }
-
         });
-        console.log(arrays)
         return intersec(arrays) ?? [];
     }
 }

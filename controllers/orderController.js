@@ -73,8 +73,10 @@ module.exports = {
             console.log(orders);
             if (orders.length) {
                 sendResult(res, 'Success', orders.map((order) => {
+                    order = order.entry?? order;
+                    order = order._doc ?? order;
                     return {
-                        ...order._doc
+                        ...order
                     }
                 }));
             } else {
