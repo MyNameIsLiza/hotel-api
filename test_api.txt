@@ -29,7 +29,8 @@ const response = await fetch('/api/rooms/620e1410f1ebca8dc95f450c', {
   });
   const json = await response.json();
   console.log('Успех:', json);
-
+6244397f4b4baa0df67adcac
+620e2286eefd538ada8f80d7
 const response = await fetch('/api/rooms', {
     method: 'PATCH',
     body: JSON.stringify({id:'620e15a56ac5ffc5f2ac2edd',price:700}),

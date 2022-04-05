@@ -59,7 +59,7 @@ module.exports = {
                     }
                 }));
             } else {
-                sendError(res, 400, 'Orders are missing')
+                sendResult(res, 'Success', []);
             }
         } catch (error) {
             sendError(res, 400, `Bad request! ${error}`)
@@ -80,7 +80,7 @@ module.exports = {
                     }
                 }));
             } else {
-                sendError(res, 400, 'Orders are missing')
+                sendResult(res, 'Success', []);
             }
         } catch (error) {
             sendError(res, 400, `Bad request! ${error}`)
